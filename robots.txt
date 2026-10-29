@@ -1,0 +1,10 @@
+# robots.txt – Nhôm Kính Thành Đạt
+# Nhớ đổi tên miền bên dưới thành tên miền thật của bạn.
+
+User-agent: *
+Allow: /
+
+# Không cần index trang lỗi
+Disallow: /404.html
+
+Sitemap: https://tubepnhom.vn/sitemap.xml
