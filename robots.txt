@@ -1,4 +1,4 @@
-# robots.txt – Nhôm Kính Thành Đạt
+# robots.txt – Tủ Bếp Hưng Phát
 # Nhớ đổi tên miền bên dưới thành tên miền thật của bạn.
 
 User-agent: *

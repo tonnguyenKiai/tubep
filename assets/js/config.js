@@ -34,5 +34,5 @@ window.SITE_CONFIG = {
   ZALO_URL: 'https://zalo.me/0901234567',
 
   /* --- Tên công ty hiển thị trong ô đồng ý nhận liên hệ --- */
-  COMPANY_NAME: 'Nhôm Kính Thành Đạt'
+  COMPANY_NAME: 'Tủ Bếp Hưng Phát'
 };

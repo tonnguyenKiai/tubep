@@ -246,7 +246,7 @@ window.SITE_CONFIG = {
   HOTLINE: '0901 234 567',
   HOTLINE_TEL: '0901234567',
   ZALO_URL: 'https://zalo.me/0901234567',
-  COMPANY_NAME: 'Nhôm Kính Thành Đạt'
+  COMPANY_NAME: 'Tủ Bếp Hưng Phát'
 };
 ```
 
@@ -370,12 +370,12 @@ Xem nhật ký lỗi chi tiết: trình chỉnh sửa Apps Script → **Thực t
 
 ## 5. Thay thông tin công ty
 
-Dữ liệu demo hiện tại là **Nhôm Kính Thành Đạt**. Cần thay những chỗ sau trên **cả 10 trang**
+Dữ liệu demo hiện tại là **Tủ Bếp Hưng Phát**. Cần thay những chỗ sau trên **cả 10 trang**
 (có ở header, footer, nội dung, khối JSON-LD và `assets/js/config.js`):
 
 | Hạng mục | Giá trị demo đang dùng |
 |---|---|
-| Tên công ty | Nhôm Kính Thành Đạt |
+| Tên công ty | Tủ Bếp Hưng Phát |
 | Hotline / Zalo | `0901 234 567` → kiểm tra cả `tel:0901234567` và `https://zalo.me/0901234567` |
 | Email | `lienhe@tubepnhom.vn` |
 | Địa chỉ | 128 Đường Lê Văn Lương, P. Nhân Chính, Q. Thanh Xuân, Hà Nội |
@@ -400,7 +400,7 @@ của khối bản đồ trong HTML (footer của cả 10 trang, và thêm một
 ```html
 <div class="footer__map map-embed ratio ratio--4x3 mt-5"
      data-map-src="https://www.google.com/maps?q=21.0049,105.8065&amp;hl=vi&amp;z=15&amp;output=embed"
-     data-map-title="Bản đồ đường tới xưởng tủ bếp nhôm Thành Đạt">
+     data-map-title="Bản đồ đường tới xưởng tủ bếp nhôm Hưng Phát">
 ```
 
 Bản đồ chỉ được tải khi người dùng cuộn tới hoặc bấm vào ảnh giữ chỗ, nên không ảnh hưởng tốc độ trang.
