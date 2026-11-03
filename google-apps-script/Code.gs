@@ -320,8 +320,14 @@ function ghiVaoSheet(r) {
       an(r.utmCampaign)
     ];
 
-    sheet.appendRow(dong);
-    return { tab: tenTab, dong: sheet.getLastRow(), sheet: sheet };
+    // Định dạng trước khi ghi: cột A là ngày giờ, cột B → O là văn bản thuần
+    // để số điện thoại giữ số 0 đầu và không bị đổi thành số/ngày.
+    var soDong = sheet.getLastRow() + 1;
+    var dinhDang = dong.map(function (_, i) { return i === 0 ? 'dd/MM/yyyy HH:mm:ss' : '@'; });
+    var vung = sheet.getRange(soDong, 1, 1, dong.length);
+    vung.setNumberFormats([dinhDang]);
+    vung.setValues([dong]);
+    return { tab: tenTab, dong: soDong, sheet: sheet };
   } finally {
     lock.releaseLock();
   }

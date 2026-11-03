@@ -17,7 +17,7 @@
 window.SITE_CONFIG = {
 
   /* --- Bắt buộc: URL Web App dạng https://script.google.com/macros/s/..../exec --- */
-  WEB_APP_URL: 'DAN-URL-WEB-APP-CUA-BAN-VAO-DAY',
+  WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbwytJX4xBF0EkTFFGrhy608QCe243hMY6fQqLfh3ed2rEGGAGDmWBCMRjSlwPHtcN7s/exec',
 
   /* --- Không bắt buộc: Site Key Cloudflare Turnstile (bắt đầu bằng 0x....) --- */
   TURNSTILE_SITE_KEY: '',
