@@ -8,7 +8,7 @@
  *  CÀI ĐẶT NHANH (chi tiết xem README.md mục 10):
  *    1. Tạo Google Sheet mới → Tiện ích mở rộng → Apps Script.
  *    2. Xoá code mẫu, dán toàn bộ file này vào.
- *    3. Chạy hàm thietLapBanDau() một lần để tạo sẵn các tab.
+ *    3. Chạy hàm thietLapBanDau() một lần để tạo tab "Báo giá đầy đủ".
  *    4. Cài đặt dự án → Thuộc tính tập lệnh (Script Properties), thêm các khoá
  *       ở bảng CAU_HINH bên dưới.
  *    5. Triển khai → Lần triển khai mới → Ứng dụng web
@@ -40,23 +40,20 @@
  *
  *  NOTIFY_EMAIL        (tuỳ chọn) Email nhận thông báo lead mới.
  *
- *  SHEET_MODE          (tuỳ chọn) 'TACH'  = mỗi loại form một tab (mặc định)
- *                                 'CHUNG' = tất cả ghi chung một tab
- *
  *  ALLOWED_ORIGIN      (tuỳ chọn) Tên miền website, ví dụ https://tubepnhom.vn
  *                      Dùng để ghi chú, Apps Script không chặn theo origin.
  * ------------------------------------------------------------------ */
 
-/** Tên tab khi SHEET_MODE = 'CHUNG'. */
-var TAB_CHUNG = 'Khách hàng';
+/** Mọi form đều ghi chung vào tab này, phân biệt bằng cột "Nguồn form". */
+var TAB_DON = 'Báo giá đầy đủ';
 
-/** Bản đồ: mã nguồn form (website gửi lên) → tên tab + tên hiển thị. */
+/** Bản đồ: mã nguồn form (website gửi lên) → tên hiển thị ở cột "Nguồn form". */
 var NGUON_FORM = {
-  'bao-gia-day-du':    { tab: 'Báo giá đầy đủ',   ten: 'Form báo giá đầy đủ (trang Liên hệ)' },
-  'bao-gia-nhanh':     { tab: 'Báo giá nhanh',    ten: 'Form báo giá nhanh (cuối trang)' },
-  'mau-tu-bep':        { tab: 'Theo mẫu tủ',      ten: 'Nhận báo giá mẫu tủ (trang chi tiết)' },
-  'du-toan':           { tab: 'Dự toán',          ten: 'Dự toán từ trang Bảng giá' },
-  'danh-sach-bao-gia': { tab: 'Danh sách báo giá', ten: 'Danh sách báo giá (nhiều mẫu)' }
+  'bao-gia-day-du':    { ten: 'Form báo giá đầy đủ (trang Liên hệ)' },
+  'bao-gia-nhanh':     { ten: 'Form báo giá nhanh (cuối trang)' },
+  'mau-tu-bep':        { ten: 'Nhận báo giá mẫu tủ (trang chi tiết)' },
+  'du-toan':           { ten: 'Dự toán từ trang Bảng giá' },
+  'danh-sach-bao-gia': { ten: 'Danh sách báo giá (nhiều mẫu)' }
 };
 
 /** Thứ tự cột trong Sheet. Đổi ở đây là đổi cả header lẫn dòng ghi mới. */
@@ -73,9 +70,21 @@ var COT = [
   'Mẫu đã chọn',
   'Giá dự toán',
   'Ghi chú',
-  'Trạng thái xử lý',
+  'Trạng thái',
   'UTM nguồn',
   'UTM chiến dịch'
+];
+
+/** Vị trí cột "Trạng thái" (tính từ 1). */
+var COT_TRANG_THAI = COT.indexOf('Trạng thái') + 1;
+
+/** Các trạng thái chọn được trong ô "Trạng thái" + màu nền / màu chữ tương ứng. */
+var TRANG_THAI = [
+  { ten: 'Mới',           nen: '#D3E3FD', chu: '#0B57D0' },
+  { ten: 'Đã liên hệ',    nen: '#FFF0C2', chu: '#7A5A00' },
+  { ten: 'Đã khảo sát',   nen: '#EADCF8', chu: '#6B2FA0' },
+  { ten: 'Đã chốt cọc',   nen: '#FFE0CC', chu: '#A43E00' },
+  { ten: 'Đã hoàn thành', nen: '#D4EDDA', chu: '#146C2E' }
 ];
 
 /** Giới hạn độ dài từng trường (ký tự) – chặn người gửi nhồi dữ liệu rác. */
@@ -273,7 +282,6 @@ function dungDongDuLieu(p) {
   return {
     ma: ma,
     nguon: NGUON_FORM[ma].ten,
-    tab: NGUON_FORM[ma].tab,
     thoiGian: new Date(),
     trang: cat(p.page, GIOI_HAN.page),
     hoTen: cat(p.name, GIOI_HAN.name),
@@ -285,7 +293,7 @@ function dungDongDuLieu(p) {
     mauDaChon: cat(p.models, GIOI_HAN.models),
     giaDuToan: cat(p.price, GIOI_HAN.price),
     ghiChu: cat(ghiChu, GIOI_HAN.note),
-    trangThai: 'Mới',
+    trangThai: TRANG_THAI[0].ten,
     utmSource: cat(p.utm_source, GIOI_HAN.utm_source),
     utmCampaign: cat(p.utm_campaign, GIOI_HAN.utm_campaign)
   };
@@ -299,8 +307,7 @@ function ghiVaoSheet(r) {
   var lock = LockService.getScriptLock();
   lock.waitLock(20000);                       // chờ tối đa 20 giây
   try {
-    var tenTab = (thuocTinh('SHEET_MODE') === 'CHUNG') ? TAB_CHUNG : r.tab;
-    var sheet = layTab(tenTab);
+    var sheet = layTab(TAB_DON);
 
     var dong = [
       r.thoiGian,
@@ -323,11 +330,15 @@ function ghiVaoSheet(r) {
     // Định dạng trước khi ghi: cột A là ngày giờ, cột B → O là văn bản thuần
     // để số điện thoại giữ số 0 đầu và không bị đổi thành số/ngày.
     var soDong = sheet.getLastRow() + 1;
+    if (soDong > sheet.getMaxRows()) {          // hết dòng trống → thêm 500 dòng, gắn lại ô chọn
+      sheet.insertRowsAfter(sheet.getMaxRows(), 500);
+      caiTrangThai(sheet);
+    }
     var dinhDang = dong.map(function (_, i) { return i === 0 ? 'dd/MM/yyyy HH:mm:ss' : '@'; });
     var vung = sheet.getRange(soDong, 1, 1, dong.length);
     vung.setNumberFormats([dinhDang]);
     vung.setValues([dong]);
-    return { tab: tenTab, dong: soDong, sheet: sheet };
+    return { tab: TAB_DON, dong: soDong, sheet: sheet };
   } finally {
     lock.releaseLock();
   }
@@ -363,8 +374,42 @@ function layTab(ten) {
     sheet.setColumnWidth(3, 220);   // Trang gửi
     sheet.setColumnWidth(10, 260);  // Mẫu đã chọn
     sheet.setColumnWidth(12, 300);  // Ghi chú
+    caiTrangThai(sheet);
   }
   return sheet;
+}
+
+/**
+ * Biến cột "Trạng thái" thành ô chọn (dropdown) và tô màu theo từng trạng thái.
+ * Chạy lại nhiều lần không sao: quy tắc cũ của cột này được thay bằng quy tắc mới.
+ */
+function caiTrangThai(sheet) {
+  var cot = sheet.getRange(2, COT_TRANG_THAI, sheet.getMaxRows() - 1, 1);
+  var ds = TRANG_THAI.map(function (t) { return t.ten; });
+
+  cot.setDataValidation(
+    SpreadsheetApp.newDataValidation()
+      .requireValueInList(ds, true)           // true = hiện mũi tên chọn trong ô
+      .setAllowInvalid(false)
+      .setHelpText('Chọn một trạng thái: ' + ds.join(', '))
+      .build()
+  );
+  cot.setHorizontalAlignment('center').setFontWeight('bold');
+  sheet.setColumnWidth(COT_TRANG_THAI, 130);
+
+  // Giữ quy tắc tô màu của các cột khác, chỉ thay quy tắc của cột trạng thái
+  var giuLai = sheet.getConditionalFormatRules().filter(function (q) {
+    return !q.getRanges().some(function (v) { return v.getColumn() === COT_TRANG_THAI; });
+  });
+  var moi = TRANG_THAI.map(function (t) {
+    return SpreadsheetApp.newConditionalFormatRule()
+      .whenTextEqualTo(t.ten)
+      .setBackground(t.nen)
+      .setFontColor(t.chu)
+      .setRanges([cot])
+      .build();
+  });
+  sheet.setConditionalFormatRules(giuLai.concat(moi));
 }
 
 /**
@@ -497,20 +542,35 @@ function esc(v) {
  *  6. TIỆN ÍCH CHẠY TAY TRONG TRÌNH SOẠN THẢO APPS SCRIPT
  * ========================================================================== */
 
-/** Chạy một lần sau khi dán code: tạo sẵn tất cả các tab kèm tiêu đề cột. */
+/**
+ * Chạy một lần sau khi dán code: tạo tab "Báo giá đầy đủ" kèm tiêu đề cột,
+ * gắn ô chọn + màu cho cột "Trạng thái". Chạy lại cũng không mất dữ liệu.
+ */
 function thietLapBanDau() {
-  if (thuocTinh('SHEET_MODE') === 'CHUNG') {
-    layTab(TAB_CHUNG);
-  } else {
-    Object.keys(NGUON_FORM).forEach(function (ma) { layTab(NGUON_FORM[ma].tab); });
-  }
-  Logger.log('Đã tạo xong các tab. Bây giờ hãy Triển khai → Ứng dụng web.');
+  var sheet = layTab(TAB_DON);
+  sheet.getRange(1, COT_TRANG_THAI).setValue(COT[COT_TRANG_THAI - 1]);
+  caiTrangThai(sheet);
+  Logger.log('Đã tạo xong tab "' + TAB_DON + '". Bây giờ hãy Triển khai → Ứng dụng web.');
+}
+
+/**
+ * Chạy một lần nếu file Sheet còn các tab cũ (Báo giá nhanh, Theo mẫu tủ, Sheet1…):
+ * xoá hết, chỉ giữ tab "Báo giá đầy đủ". Nhật ký ghi lại số dòng của từng tab đã xoá.
+ */
+function xoaTabThua() {
+  var ss = moFile();
+  layTab(TAB_DON);
+  ss.getSheets().forEach(function (sh) {
+    if (sh.getName() === TAB_DON) return;
+    Logger.log('Xoá tab "' + sh.getName() + '" (' + Math.max(0, sh.getLastRow() - 1) + ' dòng dữ liệu)');
+    ss.deleteSheet(sh);
+  });
 }
 
 /** Kiểm tra nhanh xem Script Properties đã khai báo đủ chưa. */
 function kiemTraCauHinh() {
   var ds = ['SHEET_ID', 'TURNSTILE_SECRET', 'TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID',
-            'NOTIFY_EMAIL', 'SHEET_MODE'];
+            'NOTIFY_EMAIL'];
   ds.forEach(function (k) {
     var v = thuocTinh(k);
     Logger.log(k + ': ' + (v ? '✔ đã khai báo' : '— trống'));

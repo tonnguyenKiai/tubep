@@ -143,27 +143,34 @@ Trình duyệt khách  ──POST──▶  Apps Script Web App  ──▶  Goog
 
 ### 4.1. Năm form đang nối vào hệ thống
 
-| Nguồn form (`form_source`) | Ở đâu | Tab mặc định trong Sheet |
-|---|---|---|
-| `bao-gia-day-du` | Form đầy đủ trang **Liên hệ** | `Báo giá đầy đủ` |
-| `bao-gia-nhanh` | Form ngắn cuối **trang chủ** và trang **Công trình** | `Báo giá nhanh` |
-| `mau-tu-bep` | Nút “Nhận báo giá mẫu này” ở **trang chi tiết mẫu** | `Theo mẫu tủ` |
-| `du-toan` | Form gửi kết quả ở trang **Bảng giá** | `Dự toán` |
-| `danh-sach-bao-gia` | **Danh sách báo giá** (ngăn kéo bên phải) | `Danh sách báo giá` |
+| Nguồn form (`form_source`) | Ở đâu |
+|---|---|
+| `bao-gia-day-du` | Form đầy đủ trang **Liên hệ** |
+| `bao-gia-nhanh` | Form ngắn cuối **trang chủ** và trang **Công trình** |
+| `mau-tu-bep` | Nút “Nhận báo giá mẫu này” ở **trang chi tiết mẫu** |
+| `du-toan` | Form gửi kết quả ở trang **Bảng giá** |
+| `danh-sach-bao-gia` | **Danh sách báo giá** (ngăn kéo bên phải) |
 
-Mỗi tab có cùng 15 cột:
+Tất cả đều ghi vào **một tab duy nhất** `Báo giá đầy đủ`, phân biệt bằng cột *Nguồn form*. Tab có 15 cột:
 
 ```
 Thời gian · Nguồn form · Trang gửi · Họ tên · Số điện thoại · Khu vực · Kiểu bếp ·
-Kích thước · Ngân sách · Mẫu đã chọn · Giá dự toán · Ghi chú · Trạng thái xử lý ·
+Kích thước · Ngân sách · Mẫu đã chọn · Giá dự toán · Ghi chú · Trạng thái ·
 UTM nguồn · UTM chiến dịch
 ```
 
-Cột **Trạng thái xử lý** luôn được điền sẵn `Mới` – bạn đổi tay thành *Đã gọi*, *Đã khảo sát*,
-*Đã chốt*… để theo dõi.
+Cột **Trạng thái** là ô chọn, đơn mới luôn là `Mới`. Bấm vào ô để đổi, màu tự đổi theo:
 
-> **Muốn gộp tất cả vào một tab?** Thêm Script Property `SHEET_MODE` = `CHUNG`.
-> Khi đó mọi form ghi chung vào tab `Khách hàng`, phân biệt bằng cột *Nguồn form*.
+| Trạng thái | Màu |
+|---|---|
+| Mới | Xanh dương |
+| Đã liên hệ | Vàng |
+| Đã khảo sát | Tím |
+| Đã chốt cọc | Cam |
+| Đã hoàn thành | Xanh lá |
+
+Muốn thêm / đổi tên trạng thái: sửa mảng `TRANG_THAI` trong `Code.gs`, chạy lại `thietLapBanDau()`
+rồi triển khai bản mới. File Sheet cũ còn nhiều tab thì chạy `xoaTabThua()` một lần để chỉ giữ `Báo giá đầy đủ`.
 
 ### 4.2. Các bước cài đặt (làm một lần, khoảng 10 phút)
 
@@ -193,7 +200,6 @@ Trong trình chỉnh sửa Apps Script: **⚙ Cài đặt dự án → Thuộc t
 | `TELEGRAM_BOT_TOKEN` | Không | Token bot Telegram (mục 4.5) |
 | `TELEGRAM_CHAT_ID` | Không | Chat ID nhận thông báo (mục 4.5) |
 | `NOTIFY_EMAIL` | Không | Email nhận thông báo khách mới |
-| `SHEET_MODE` | Không | `TACH` (mặc định) hoặc `CHUNG` |
 | `ALLOWED_ORIGIN` | Không | Tên miền website, ví dụ `https://tubepnhom.vn` |
 
 > ⚠️ **Không bao giờ viết secret key, bot token thẳng vào `Code.gs`.** File đó có thể bị chia sẻ
@@ -208,7 +214,7 @@ Chọn hàm `thietLapBanDau` trong danh sách thả xuống rồi bấm **Chạy
 Lần đầu Google hỏi quyền → **Xem lại quyền → chọn tài khoản → Nâng cao → Chuyển tới … (không an toàn) → Cho phép**.
 (Cảnh báo này là bình thường với script tự viết, chưa qua kiểm duyệt của Google.)
 
-Hàm này tạo sẵn các tab và dòng tiêu đề. Chạy tiếp `kiemTraCauHinh()` để xem bảng nhật ký
+Hàm này tạo tab `Báo giá đầy đủ` với dòng tiêu đề và ô chọn trạng thái. Chạy tiếp `kiemTraCauHinh()` để xem bảng nhật ký
 báo thuộc tính nào đã khai, thiếu gì.
 
 **Bước 5 – Deploy thành Web App**
