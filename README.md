@@ -125,6 +125,12 @@ Các giá trị phải **khớp đúng** với `data-*` ở trên:
 `<title>`, `<meta name="description">`, `<link rel="canonical">`, các thẻ `og:` / `twitter:`,
 khối JSON-LD (`Product` + `BreadcrumbList`), `<h1>`, nội dung, và nhớ **thêm URL mới vào `sitemap.xml`**.
 
+> **URL tuyệt đối không có đuôi `.html`.** Cloudflare Workers tự chuyển hướng 307 `/abc.html` → `/abc`
+> (và `/thu-muc/index.html` → `/thu-muc/`). Vì vậy canonical, `og:url`, JSON-LD và `sitemap.xml` phải ghi
+> `https://tubepnhomhanoi.xyz/mau-tu-bep/ten-mau` (không `.html`). Nếu ghi kèm `.html`, Google coi đó là
+> "trang có chuyển hướng" và có thể không lập chỉ mục. Liên kết **tương đối** trong trang vẫn giữ `.html`
+> để mở được bằng `file://`.
+
 Bộ đếm "Đang hiển thị N mẫu" và nút "Xoá bộ lọc" tự chạy, không cần sửa gì thêm.
 
 ---
