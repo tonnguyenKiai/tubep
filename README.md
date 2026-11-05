@@ -386,7 +386,7 @@ Dữ liệu demo hiện tại là **Tủ Bếp Hưng Phát**. Cần thay những
 | Email | `lienhe@tubepnhom.vn` |
 | Địa chỉ | 286 Lê Trọng Tấn, Hà Đông, Hà Nội |
 | Tên miền | `https://tubepnhomhanoi.xyz` (có trong canonical, og:url, sitemap.xml, robots.txt) |
-| Bản đồ | iframe Google Maps tìm theo địa chỉ; JSON-LD chưa có `geo` (chưa có toạ độ đã xác minh) |
+| Bản đồ | iframe Google Maps tìm theo địa chỉ; JSON-LD `geo`: `20.9678555, 105.7555075` (Google Maps định vị 286 Lê Trọng Tấn) |
 | Giờ làm việc | T2–T7 8:00–18:00 · CN 8:00–12:00 |
 | Số liệu | 12 năm kinh nghiệm · 1.500+ công trình · bảo hành 24 tháng |
 | Khu vực phục vụ | Hà Nội · Bắc Ninh · Hưng Yên · Hải Dương · Vĩnh Phúc · Hà Nam |
