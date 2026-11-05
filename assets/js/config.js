@@ -29,9 +29,9 @@ window.SITE_CONFIG = {
   MIN_FILL_SECONDS: 3,
 
   /* --- Thông tin liên hệ dùng trong thông báo lỗi gửi form --- */
-  HOTLINE: '0901 234 567',
-  HOTLINE_TEL: '0901234567',
-  ZALO_URL: 'https://zalo.me/0901234567',
+  HOTLINE: '0353 353 190',
+  HOTLINE_TEL: '0353353190',
+  ZALO_URL: 'https://zalo.me/0353353190',
 
   /* --- Tên công ty hiển thị trong ô đồng ý nhận liên hệ --- */
   COMPANY_NAME: 'Tủ Bếp Hưng Phát'

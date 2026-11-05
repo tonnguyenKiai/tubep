@@ -25,9 +25,9 @@
   var WEB_APP_URL   = CFG.WEB_APP_URL || '';
   var TIMEOUT_MS    = CFG.REQUEST_TIMEOUT_MS || 15000;
   var MIN_FILL_MS   = (CFG.MIN_FILL_SECONDS || 3) * 1000;
-  var HOTLINE       = CFG.HOTLINE || '0901 234 567';
-  var HOTLINE_TEL   = CFG.HOTLINE_TEL || '0901234567';
-  var ZALO_URL      = CFG.ZALO_URL || 'https://zalo.me/0901234567';
+  var HOTLINE       = CFG.HOTLINE || '0353 353 190';
+  var HOTLINE_TEL   = CFG.HOTLINE_TEL || '0353353190';
+  var ZALO_URL      = CFG.ZALO_URL || 'https://zalo.me/0353353190';
 
   // Chưa dán URL Web App => chạy chế độ demo: kiểm tra dữ liệu đầy đủ,
   // báo thành công, nhưng không gửi đi đâu (in ra Console để xem thử).

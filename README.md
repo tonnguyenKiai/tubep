@@ -249,9 +249,9 @@ window.SITE_CONFIG = {
   TURNSTILE_SITE_KEY: '',          // để trống nếu chưa dùng Turnstile
   REQUEST_TIMEOUT_MS: 15000,
   MIN_FILL_SECONDS: 3,
-  HOTLINE: '0901 234 567',
-  HOTLINE_TEL: '0901234567',
-  ZALO_URL: 'https://zalo.me/0901234567',
+  HOTLINE: '0353 353 190',
+  HOTLINE_TEL: '0353353190',
+  ZALO_URL: 'https://zalo.me/0353353190',
   COMPANY_NAME: 'Tủ Bếp Hưng Phát'
 };
 ```
@@ -382,11 +382,11 @@ Dữ liệu demo hiện tại là **Tủ Bếp Hưng Phát**. Cần thay những
 | Hạng mục | Giá trị demo đang dùng |
 |---|---|
 | Tên công ty | Tủ Bếp Hưng Phát |
-| Hotline / Zalo | `0901 234 567` → kiểm tra cả `tel:0901234567` và `https://zalo.me/0901234567` |
+| Hotline / Zalo | `0353 353 190` → kiểm tra cả `tel:0353353190` và `https://zalo.me/0353353190` |
 | Email | `lienhe@tubepnhom.vn` |
-| Địa chỉ | 128 Đường Lê Văn Lương, P. Nhân Chính, Q. Thanh Xuân, Hà Nội |
+| Địa chỉ | 286 Lê Trọng Tấn, Hà Đông, Hà Nội |
 | Tên miền | `https://tubepnhom.vn` (có trong canonical, og:url, sitemap.xml, robots.txt) |
-| Toạ độ bản đồ | `21.0049, 105.8065` (trong JSON-LD `geo` và trong URL iframe Google Maps) |
+| Bản đồ | iframe Google Maps tìm theo địa chỉ; JSON-LD chưa có `geo` (chưa có toạ độ đã xác minh) |
 | Giờ làm việc | T2–T7 8:00–18:00 · CN 8:00–12:00 |
 | Số liệu | 12 năm kinh nghiệm · 1.500+ công trình · bảo hành 24 tháng |
 | Khu vực phục vụ | Hà Nội · Bắc Ninh · Hưng Yên · Hải Dương · Vĩnh Phúc · Hà Nam |
@@ -399,13 +399,13 @@ Cách nhanh nhất là tìm–thay hàng loạt. Ví dụ đổi tên miền:
 sed -i 's#https://tubepnhom.vn#https://tenmienmoi.vn#g' *.html */*.html sitemap.xml robots.txt
 ```
 
-**Lấy toạ độ thật:** mở Google Maps → chuột phải vào vị trí xưởng → số đầu là vĩ độ (latitude),
-số sau là kinh độ (longitude). Dán vào JSON-LD (`"latitude"`, `"longitude"`) và vào thuộc tính `data-map-src`
+**Thêm toạ độ thật (nên làm):** mở Google Maps → chuột phải vào vị trí xưởng → số đầu là vĩ độ (latitude),
+số sau là kinh độ (longitude). Thêm vào JSON-LD `"geo": { "@type": "GeoCoordinates", "latitude": …, "longitude": … }`, có thể thay `q=` trong `data-map-src`
 của khối bản đồ trong HTML (footer của cả 10 trang, và thêm một khối nữa ở trang Liên hệ):
 
 ```html
 <div class="footer__map map-embed ratio ratio--4x3 mt-5"
-     data-map-src="https://www.google.com/maps?q=21.0049,105.8065&amp;hl=vi&amp;z=15&amp;output=embed"
+     data-map-src="https://www.google.com/maps?q=286+L%C3%AA+Tr%E1%BB%8Dng+T%E1%BA%A5n,+H%C3%A0+%C4%90%C3%B4ng,+H%C3%A0+N%E1%BB%99i&amp;hl=vi&amp;z=15&amp;output=embed"
      data-map-title="Bản đồ đường tới xưởng tủ bếp nhôm Hưng Phát">
 ```
 
