@@ -200,7 +200,7 @@ Trong trình chỉnh sửa Apps Script: **⚙ Cài đặt dự án → Thuộc t
 | `TELEGRAM_BOT_TOKEN` | Không | Token bot Telegram (mục 4.5) |
 | `TELEGRAM_CHAT_ID` | Không | Chat ID nhận thông báo (mục 4.5) |
 | `NOTIFY_EMAIL` | Không | Email nhận thông báo khách mới |
-| `ALLOWED_ORIGIN` | Không | Tên miền website, ví dụ `https://tubepnhom.vn` |
+| `ALLOWED_ORIGIN` | Không | Tên miền website, ví dụ `https://tubepnhomhanoi.xyz` |
 
 > ⚠️ **Không bao giờ viết secret key, bot token thẳng vào `Code.gs`.** File đó có thể bị chia sẻ
 > hoặc đưa lên Git. Mọi thứ nhạy cảm đều đọc từ Script Properties.
@@ -385,7 +385,7 @@ Dữ liệu demo hiện tại là **Tủ Bếp Hưng Phát**. Cần thay những
 | Hotline / Zalo | `0353 353 190` → kiểm tra cả `tel:0353353190` và `https://zalo.me/0353353190` |
 | Email | `lienhe@tubepnhom.vn` |
 | Địa chỉ | 286 Lê Trọng Tấn, Hà Đông, Hà Nội |
-| Tên miền | `https://tubepnhom.vn` (có trong canonical, og:url, sitemap.xml, robots.txt) |
+| Tên miền | `https://tubepnhomhanoi.xyz` (có trong canonical, og:url, sitemap.xml, robots.txt) |
 | Bản đồ | iframe Google Maps tìm theo địa chỉ; JSON-LD chưa có `geo` (chưa có toạ độ đã xác minh) |
 | Giờ làm việc | T2–T7 8:00–18:00 · CN 8:00–12:00 |
 | Số liệu | 12 năm kinh nghiệm · 1.500+ công trình · bảo hành 24 tháng |
@@ -396,7 +396,7 @@ Dữ liệu demo hiện tại là **Tủ Bếp Hưng Phát**. Cần thay những
 Cách nhanh nhất là tìm–thay hàng loạt. Ví dụ đổi tên miền:
 
 ```bash
-sed -i 's#https://tubepnhom.vn#https://tenmienmoi.vn#g' *.html */*.html sitemap.xml robots.txt
+sed -i 's#https://tubepnhomhanoi.xyz#https://tenmienmoi.vn#g' *.html */*.html sitemap.xml robots.txt
 ```
 
 **Thêm toạ độ thật (nên làm):** mở Google Maps → chuột phải vào vị trí xưởng → số đầu là vĩ độ (latitude),
@@ -464,7 +464,7 @@ Nếu tên miền đã dùng Cloudflare DNS thì bản ghi được thêm tự �
 hướng dẫn trỏ CNAME. HTTPS được cấp miễn phí, tự động.
 
 **Sau khi có tên miền thật, nhớ làm 3 việc:**
-1. Thay toàn bộ `https://tubepnhom.vn` trong code (xem mục 5).
+1. Thay toàn bộ `https://tubepnhomhanoi.xyz` trong code (xem mục 5).
 2. Cập nhật dòng `Sitemap:` trong `robots.txt`.
 3. Khai báo website với [Google Search Console](https://search.google.com/search-console)
    và nộp `sitemap.xml`.
@@ -562,7 +562,7 @@ Mở `assets/css/style.css`, toàn bộ màu – font – khoảng cách – bo 
 - [ ] Bật Cloudflare Turnstile và khai `TURNSTILE_SECRET` trong Script Properties (mục 4.4)
 - [ ] Bật thông báo Telegram và/hoặc email cho khách mới (mục 4.5)
 - [ ] Đọc lại và sửa `chinh-sach-bao-mat/index.html` cho khớp thực tế doanh nghiệp (mục 4.9)
-- [ ] Thay `https://tubepnhom.vn` bằng tên miền thật ở mọi nơi, kể cả `sitemap.xml` và `robots.txt`
+- [ ] Thay `https://tubepnhomhanoi.xyz` bằng tên miền thật ở mọi nơi, kể cả `sitemap.xml` và `robots.txt`
 - [ ] Tạo ảnh Open Graph thật, kích thước **1200×630**, thay vào các thẻ `og:image`
 - [ ] Kiểm tra lại giá trong bảng giá và trong `data-price` (mục 6)
 - [ ] Cập nhật `lastmod` trong `sitemap.xml`
