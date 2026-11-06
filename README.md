@@ -19,9 +19,10 @@ Mở trực tiếp bằng trình duyệt là chạy được, hoặc kéo thả 
 ├── kien-thuc/
 │   ├── index.html                                 Danh sách bài viết
 │   └── so-sanh-tu-bep-nhom-va-tu-bep-go.html      Bài viết mẫu ~1.250 từ
+├── tu-bep-nhom-ha-dong/index.html                 Trang khu vực Hà Đông (local SEO): bảng giá, quy trình, FAQ
 ├── chinh-sach-bao-mat/index.html                  Chính sách bảo mật (ô tích đồng ý trỏ tới đây)
 ├── 404.html                                       Trang lỗi (noindex)
-├── sitemap.xml                                    9 URL
+├── sitemap.xml                                    10 URL
 ├── robots.txt
 ├── google-apps-script/
 │   └── Code.gs                                    Máy chủ nhận form, ghi Google Sheet (mục 4)
@@ -85,7 +86,7 @@ assets/images/cong-trinh-tu-bep-nhom-thanh-xuan-01.webp
 
 Các trang đang có preload ảnh LCP: `index.html`, `mau-tu-bep/index.html`,
 `mau-tu-bep/tu-bep-nhom-kinh-chu-l.html`, `cong-trinh/index.html`, `kien-thuc/index.html`,
-`kien-thuc/so-sanh-tu-bep-nhom-va-tu-bep-go.html`.
+`kien-thuc/so-sanh-tu-bep-nhom-va-tu-bep-go.html`, `tu-bep-nhom-ha-dong/index.html`.
 
 > Khi đã dùng ảnh nội bộ, có thể xoá dòng `<link rel="preconnect" href="https://images.unsplash.com" crossorigin>`
 > trong `<head>` của các trang.
@@ -526,7 +527,7 @@ Ngoại lệ duy nhất là `404.html` dùng đường dẫn tuyệt đối (`/a
 bất kỳ URL nào. Nếu muốn chuyển cả site sang đường dẫn tuyệt đối sau khi lên hosting:
 
 ```bash
-sed -i -E 's#(href|src)="\.\./#\1="/#g; s#(href|src)="(index\.html|mau-tu-bep/|cong-trinh/|bang-gia/|lien-he/|kien-thuc/|assets/)#\1="/\2#g' *.html */*.html
+sed -i -E 's#(href|src)="\.\./#\1="/#g; s#(href|src)="(index\.html|mau-tu-bep/|cong-trinh/|bang-gia/|lien-he/|kien-thuc/|tu-bep-nhom-ha-dong/|assets/)#\1="/\2#g' *.html */*.html
 ```
 
 ### Hiệu ứng không làm hỏng SEO
