@@ -1,5 +1,7 @@
 /* =========================================================================
    TỦ BẾP NHÔM – HỆ THỐNG THIẾT KẾ (DESIGN SYSTEM) · MOBILE-FIRST
+   ĐÂY LÀ BẢN NGUỒN. Các trang dùng bản rút gọn style.min.css → sửa xong file này
+   PHẢI chạy:  node tools/build-css.mjs   (sinh lại style.min.css + đổi ?v= trong mọi trang)
    Quy ước: BEM (block__element--modifier). Viết cho màn 360px trước,
    rồi mở rộng bằng @media (min-width: 600px / 900px / 1200px).
 

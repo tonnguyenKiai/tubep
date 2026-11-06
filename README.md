@@ -1,7 +1,9 @@
 # Website tủ bếp nhôm – hướng dẫn sử dụng & triển khai
 
-Website tĩnh (HTML5 + CSS3 + JavaScript thuần), không framework, không build step.
+Website tĩnh (HTML5 + CSS3 + JavaScript thuần), không framework.
 Mở trực tiếp bằng trình duyệt là chạy được, hoặc kéo thả lên Cloudflare Pages / Netlify / GitHub Pages.
+Bước "build" duy nhất: **sửa `assets/css/style.css` xong thì chạy `node tools/build-css.mjs`** để sinh lại
+bản rút gọn `style.min.css` mà các trang đang dùng (xem mục 8 – "CSS rút gọn").
 
 ---
 
@@ -26,8 +28,11 @@ Mở trực tiếp bằng trình duyệt là chạy được, hoặc kéo thả 
 ├── robots.txt
 ├── google-apps-script/
 │   └── Code.gs                                    Máy chủ nhận form, ghi Google Sheet (mục 4)
+├── tools/
+│   └── build-css.mjs                              Sinh style.min.css từ style.css (Node có sẵn, không thư viện)
 └── assets/
-    ├── css/style.css                              Toàn bộ CSS (biến màu/typography ở :root)
+    ├── css/style.css                              BẢN NGUỒN toàn bộ CSS, có chú thích (biến màu/typography ở :root)
+    ├── css/style.min.css                          Bản rút gọn các trang đang dùng – TỰ SINH, không sửa tay
     ├── js/config.js                               ⚙ URL Web App + Site Key Turnstile – sửa ở đây
     ├── js/main.js                                 Lõi dùng chung: menu, thanh đáy, form nhiều bước, ngăn báo giá, toast…
     ├── js/catalog.js                              Bộ lọc danh mục (bottom sheet) – chỉ trang danh mục
@@ -513,11 +518,30 @@ Số đo bằng `gzip -9` trên file thật.
 Muốn **tự host thư viện** thay vì dùng CDN: tải file về `assets/vendor/` rồi sửa URL trong `animations.js`
 (hằng số CDN ở đầu file). Giữ nguyên thuộc tính `defer` của các thẻ `<script>`.
 
+### CSS rút gọn (`style.css` → `style.min.css`)
+
+`style.css` là bản nguồn (~127 KB, nhiều chú thích tiếng Việt). Các trang **không** dùng nó trực tiếp mà dùng
+`style.min.css?v=<mã>` do `tools/build-css.mjs` sinh ra (Cloudflare đã bỏ tính năng Auto Minify nên phải tự rút gọn):
+
+| | Thô | Sau nén brotli |
+|---|---|---|
+| `style.css` (nguồn) | 127 KB | ≈ 28 KB |
+| `style.min.css` (đang dùng) | 91 KB | ≈ 16 KB |
+
+```bash
+node tools/build-css.mjs          # sau MỖI lần sửa style.css: sinh lại style.min.css + đổi ?v= trong mọi .html
+node tools/build-css.mjs --check  # chỉ kiểm tra bản rút gọn còn khớp không (báo lỗi nếu quên chạy lệnh trên)
+```
+
+Script chỉ bỏ chú thích và khoảng trắng thừa, giữ nguyên chuỗi trong nháy, không đổi thứ tự hay gộp rule →
+trình duyệt đọc ra đúng y hệt bản nguồn. **Quên chạy lệnh thì sửa CSS sẽ không có tác dụng trên web.**
+
 ### Vì sao không nội tuyến (inline) critical CSS
 
-Toàn site chỉ có **một file CSS ~127 KB (≈29 KB sau gzip; ≈35 KB là chú thích)**. Khi lên hosting nên bật nén/minify CSS (Cloudflare Auto Minify hoặc bước build) để còn ≈17 KB gzip. Qua HTTP/2 của Cloudflare, chi phí chặn
-render của nó không đáng kể, trong khi nội tuyến sẽ lặp lại CSS ở cả 9 file, làm HTML nặng thêm và
-dễ sinh FOUC khi sửa. Thay vào đó: font Google và CSS của Swiper được tải **bất đồng bộ**
+Toàn site chỉ có **một file CSS ≈16 KB sau nén**. Qua HTTP/2 của Cloudflare, chi phí chặn render của nó nhỏ
+(FCP mobile đo bằng PageSpeed ≈ 1,1 giây), trong khi nội tuyến sẽ lặp lại CSS ở cả 11 file, làm HTML nặng thêm và
+dễ sinh FOUC khi sửa. Tách CSS theo từng trang cũng chỉ bớt thêm được vài KB nên chưa làm.
+Thay vào đó: font Google và CSS của Swiper được tải **bất đồng bộ**
 (`media="print" onload="this.media='all'"` kèm `<noscript>` dự phòng).
 
 ### Đường dẫn tương đối
@@ -546,7 +570,7 @@ sed -i -E 's#(href|src)="\.\./#\1="/#g; s#(href|src)="(index\.html|mau-tu-bep/|c
 ### Tuỳ biến giao diện
 
 Mở `assets/css/style.css`, toàn bộ màu – font – khoảng cách – bo góc – bóng đổ nằm trong khối
-`:root` ở đầu file. Ví dụ đổi màu nhấn:
+`:root` ở đầu file (sửa xong nhớ chạy `node tools/build-css.mjs`). Ví dụ đổi màu nhấn:
 
 ```css
 :root {

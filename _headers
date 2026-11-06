@@ -1,0 +1,5 @@
+# Header tuỳ chỉnh cho Cloudflare (Workers static assets / Pages đọc file này, không phục vụ ra ngoài).
+# CSS được cache 1 năm: mọi trang gọi style.min.css?v=<mã băm>, mã đổi mỗi lần chạy tools/build-css.mjs
+# nên khách luôn nhận bản mới ngay khi CSS thay đổi.
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
